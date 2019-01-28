@@ -12,7 +12,7 @@ my $toGetFile = $ARGV[0] || die "specify a csv with list of things to for RSS to
 
 $ADDCMD = "deluge-console add";
 $DELCMD = "deluge-console pause";
-$DELAGE = 3600;
+$DELAGE = 1200;
 
 my %match;
 open(IN,"<$toGetFile");
@@ -33,6 +33,7 @@ for my $r (keys %{$torrents})
 {
 	for my $m (keys %match)
 	{
+		#print STDERR "$r $m\n";
 		if($r =~ /$m/i && ! -e "$match{$m}/$r")
 		{
 			print "$r matched regex $m\n\tGrabbing magnet to dir $match{$m} \n";
@@ -44,8 +45,11 @@ for my $r (keys %{$torrents})
 
 for my $f (glob ("$trackingDir/*"))
 {
+	$f =~ s/\'/\\\'/g;
 	runcmd("$DELCMD \\\"" . basename($f) . "\\\"") if (time - ( stat($f))[9]) > 3600;
+	unlink $f if (time - ( stat($f))[9]) > 864000;
 }
+
 
 sub runcmd{
         my $cmd=shift @_;
