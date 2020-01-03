@@ -35,8 +35,11 @@ for my $m (keys %match)
 	for my $r (keys %{$torrents})
 	{
 		print "search $m\n\tGrabbing $r magnet to dir $match{$m} \n";
-		runcmd("$ADDCMD -p $match{$m} \"$torrents->{$r}->{link}\"");
-		runcmd("touch \"$trackingDir/$r\"");
+		if( ! -e "$match{$m}/$r" && ! -e "$trackingDir/$r")
+		{	
+			runcmd("$ADDCMD -p $match{$m} \"$torrents->{$r}->{link}\""); 
+			runcmd("touch \"$trackingDir/$r\"");
+		}
 	}
 }
 for my $f (glob ("$trackingDir/*"))
