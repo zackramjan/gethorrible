@@ -33,8 +33,8 @@ for my $r (keys %{$torrents})
 {
 	for my $m (keys %match)
 	{
-		#print STDERR "$r $m\n";
-		if($r =~ /$m/i && ! -e "$match{$m}/$r")
+		#print STDERR "$r $m \n";
+		if($r =~ /$m/i && ! -e "$match{$m}/$r" && ! -e "$trackingDir/$r")
 		{
 			print "$r matched regex $m\n\tGrabbing magnet to dir $match{$m} \n";
 			runcmd("$ADDCMD -p $match{$m} \"$torrents->{$r}->{link}\"");
