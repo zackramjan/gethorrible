@@ -20,6 +20,7 @@ while(my $line=<IN>)
 {
 	chomp $line;
 	next unless $line =~ /,/;
+	next if $line =~ /^\#/;
 	my @a = split(/,/,$line);
 	$match{$a[0]}=$a[1];
 }
@@ -29,14 +30,15 @@ while(my $line=<IN>)
 
 for my $m (keys %match)
 {
+	$m =~ s/\"/\\\"/g;
 	my $xml = `wget -O - \"https://nyaa.si/?page=rss&q=$m&c=0_0&f=0&magnets\"` ;
 	my $ref = XMLin($xml, ForceArray => 0, KeyAttr => "title");
 	$torrents = $ref->{"channel"}->{item};
 	for my $r (keys %{$torrents})
 	{
-		print "search $m\n\tGrabbing $r magnet to dir $match{$m} \n";
 		if( ! -e "$match{$m}/$r" && ! -e "$trackingDir/$r")
 		{	
+			print "search $m\n\tGrabbing $r magnet to dir $match{$m} \n";
 			runcmd("$ADDCMD -p $match{$m} \"$torrents->{$r}->{link}\""); 
 			runcmd("touch \"$trackingDir/$r\"");
 		}
