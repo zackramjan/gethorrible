@@ -40,10 +40,7 @@ for my $m (keys %match)
 		my  $pubdate = str2time($item->findvalue('./pubDate'));
 		last if ($pubdate < time() - 864000) && ! $ARGV[1]; 
 
-		$link =~ m/dn=(.+?)\&/; 
-		my $magFile = $1;	
-
-		if( ! -e "$match{$m}/$r" && ! -e "$match{$m}/$r"  && ! -e "$trackingDir/$infohash")
+		if( ! -e "$match{$m}/$title"  && ! -e "$trackingDir/$infohash")
 		{	
 			print "search $m\n\tGrabbing $title magnet to dir $match{$m} \n";
 			runcmd("$ADDCMD -p $match{$m} \"$link\""); 
