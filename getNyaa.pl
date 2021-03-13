@@ -37,7 +37,7 @@ for my $m (keys %match)
 		my  $link = $item->findvalue('./link');
 		my  $infohash = $item->findvalue('./nyaa:infoHash');
 		my  $pubdate = str2time($item->findvalue('./pubDate'));
-		last if ($pubdate < time() - 864000) && ! $ARGV[1]; 
+		last if ($pubdate < time() - 864000) && ! $ARGV[2]; 
 
 		if( ! -e "$match{$m}/$title"  && ! -e "$trackingDir/$infohash")
 		{	
