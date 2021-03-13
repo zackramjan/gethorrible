@@ -2,18 +2,17 @@
 use XML::Simple;
 use XML::LibXML;
 use Data::Dumper;
-use File::HomeDir;
 use File::Basename;
 use Date::Parse;
 
-my $trackingDir = File::HomeDir->my_home . "/.autoGet";
-mkdir("$trackingDir") unless -e "$trackingDir";
 
 my $toGetFile = $ARGV[0] || die "specify a csv with list of things to for RSS to match and dir to save to (ex: One Piece,one_piece)\n";
 -e $toGetFile  || die "specify a csv with list of things to for RSS to match and dir to save to (ex: One Piece,one_piece)\n";
+my $trackingDir = $ARGV[1] || die "specify a tracking dir to keep track of already retrieved files, this will also get cleaned regularly\n";
+-e $trackingDir  || die "specify a tracking dir to keep track of already retrieved files, this will also get cleaned regularly\n";
 
-$ADDCMD = "deluge-console add";
-$DELCMD = "deluge-console pause";
+$ADDCMD = "echo deluge-console add";
+$DELCMD = "echo deluge-console pause";
 $DELAGE = 1200;
 
 my %match;
@@ -42,7 +41,7 @@ for my $m (keys %match)
 
 		if( ! -e "$match{$m}/$title"  && ! -e "$trackingDir/$infohash")
 		{	
-			print "search $m\n\tGrabbing $title magnet to dir $match{$m} \n";
+			print STDERR "search $m\n\tGrabbing $title magnet to dir $match{$m} \n";
 			runcmd("$ADDCMD -p $match{$m} \"$link\""); 
 			open my $outfile, ">$trackingDir/$infohash";
 			print $outfile "$title\n$link\n$infohash\n$pubdate\n";
