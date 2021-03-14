@@ -11,7 +11,7 @@ my $toGetFile = $ARGV[0] || die "specify a csv with list of things to for RSS to
 my $trackingDir = $ARGV[1] || die "specify a tracking dir to keep track of already retrieved files, this will also get cleaned regularly\n";
 -e $trackingDir  || die "specify a tracking dir to keep track of already retrieved files, this will also get cleaned regularly\n";
 
-$ADDCMD = "echo deluge-console add";
+$ADDCMD = "echo deluge-console \\\"add";
 $DELCMD = "echo deluge-console pause";
 $DELAGE = 1200;
 
@@ -42,7 +42,7 @@ for my $m (keys %match)
 		if( ! -e "$match{$m}/$title"  && ! -e "$trackingDir/$infohash")
 		{	
 			print STDERR "search $m\n\tGrabbing $title magnet to dir $match{$m} \n";
-			runcmd("$ADDCMD -p $match{$m} \"$link\""); 
+			runcmd("$ADDCMD -p $match{$m} $link\\\""); 
 			open my $outfile, ">$trackingDir/$infohash";
 			print $outfile "$title\n$link\n$infohash\n$pubdate\n";
 			close $outfile;
