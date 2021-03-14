@@ -42,7 +42,7 @@ for my $m (keys %match)
 		if( ! -e "$match{$m}/$title"  && ! -e "$trackingDir/$infohash")
 		{	
 			print STDERR "search $m\n\tGrabbing $title magnet to dir $match{$m} \n";
-			runcmd("$ADDCMD -p $match{$m} $link\\\""); 
+			runcmd("$ADDCMD -p $match{$m} \"$link\"\\\""); 
 			open my $outfile, ">$trackingDir/$infohash";
 			print $outfile "$title\n$link\n$infohash\n$pubdate\n";
 			close $outfile;
