@@ -29,7 +29,7 @@ while(my $line=<IN>)
 for my $m (keys %match)
 {
 	$m =~ s/\"/\\\"/g;
-	my $xml = `wget -O - \"https://nyaa.si/?page=rss&q=$m&c=1_2&f=0&magnets&s=id&o=desc\"` ;
+	my $xml = `wget -O - \"https://nyaa.si/?page=rss&q=$m&f=0&magnets&s=id&o=desc\"` ;
 	my $ref = XML::LibXML->load_xml(string => $xml);
 	foreach my $item ($ref->findnodes('/rss/channel/item')) 
 	{
